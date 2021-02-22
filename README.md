@@ -31,7 +31,7 @@ Golang写的土司自动签到程序(Server酱推送,检测是否成功,没成�
 ### 如果觉得麻烦，可以直接下载编译好的文件，修改config.json里的配置就可以了。
 太菜了.
 
-![运行截图](https://github.com/TRYblog/go-Tubi/blob/main/p.jpg "go-Tubi")
+![运行截图](https://github.com/TRYblog/go-Tubi/blob/main/111.PNG "go-Tubi")
 
 ## 关于作者
 一个菜鸟.

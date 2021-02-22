@@ -11,7 +11,7 @@ Golang写的土司自动签到程序(Server酱推送,检测是否成功,没成�
 {
   "action":"login",  //不可修改
   "Username": "",    //登录账号
-  "password": "",   // 登录密码
+  "password": "",   // 登录密码，不加密
   "questionid": 0,  //安全问题id
   "answer": "",    //安全问题答案
   "type": 0,       //是否开启server酱推送，0表示不开启，1表示开启，默认关闭

@@ -120,7 +120,9 @@ func Sendmsg(key string, msg string) {
 }
 
 func main() {
-	file, _ := os.Open("config.json")
+	pwd,_:=os.Getwd()
+	//fmt.Println(pwd)
+	file, _ := os.Open(pwd+"\\config.json")
 	defer file.Close()
 	decoder := json.NewDecoder(file)
 	conf := &Userinfo{}

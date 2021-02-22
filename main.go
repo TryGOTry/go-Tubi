@@ -120,24 +120,27 @@ func Sendmsg(key string, msg string) {
 }
 
 func main() {
-	pwd,_:=os.Getwd()
-	//fmt.Println(pwd)
-	file, _ := os.Open(pwd+"\\config.json")
-	defer file.Close()
-	decoder := json.NewDecoder(file)
-	conf := &Userinfo{}
-	err := decoder.Decode(&conf)
-	if err != nil {
-		fmt.Println("Error:", err)
-	}
-	if conf.Action != "login" {
-		fmt.Println("[info] Action配置必须是login!")
-		os.Exit(1)
-	} else if conf.Username == "" || conf.Password == "" || conf.Answer == "" {
-		fmt.Println("[info] 请认证填写config.json配置文件~")
+	if len(os.Args) < 2 {
+		fmt.Println("[info] 请输入配置文件地址，运行案例:Tubi.exe config.json (不行的话，请加绝对路径)")
 	} else {
-		fmt.Println("[info] 配置读取成功！ by: Try")
-		fmt.Println("[info] By T00ls.Net；")
-		T00ls_Go(conf) //开始执行
+		filename :=os.Args[1]
+		file, _ := os.Open(filename)
+		defer file.Close()
+		decoder := json.NewDecoder(file)
+		conf := &Userinfo{}
+		err := decoder.Decode(&conf)
+		if err != nil {
+			fmt.Println("Error:", err)
+		}
+		if conf.Action != "login" {
+			fmt.Println("[info] Action配置必须是login!")
+			os.Exit(1)
+		} else if conf.Username == "" || conf.Password == "" || conf.Answer == "" {
+			fmt.Println("[info] 请认证填写config.json配置文件~")
+		} else {
+			fmt.Println("[info] 配置读取成功！ by: Try")
+			fmt.Println("[info] By T00ls.Net；")
+			T00ls_Go(conf) //开始执行
+		}
 	}
 }

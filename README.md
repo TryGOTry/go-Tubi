@@ -4,8 +4,9 @@ Golang写的土司自动签到程序(Server酱推送,检测是否成功,没成�
 ## 说明
 又是造轮子的一天.
 
-需要修改官方的net/http这个库才行。(ps:改了一下http.postform这个方法，支持带入cookie)
-下载client.go这个文件替换官方的net\http\client.go文件
+根据大佬的操作，不用修改标准库也可以带cookie进行post发包了！！！！！！！！   果然还是自己太菜了。
+
+
 ## config.json说明
 ```
 {
@@ -28,7 +29,21 @@ Golang写的土司自动签到程序(Server酱推送,检测是否成功,没成�
 
 ```
 ---
-### 如果觉得麻烦，可以直接下载编译好的文件，修改config.json里的配置就可以了。
+### 如何编译
+```
+Linux:
+SET CGO_ENABLED=0
+SET GOOS=linux
+SET GOARCH=amd64
+go build -ldflags "-s -w" -o Tubi_linux_x64 main.go
+
+windows:
+SET CGO_ENABLED=0
+SET GOOS=windows
+SET GOARCH=amd64
+go build -ldflags "-s -w" -o Tubi_x64.exe main.go
+```
+### 可以直接下载编译好的文件，修改config.json里的配置就可以了。
 太菜了.
 
 ![运行截图](https://github.com/TRYblog/go-Tubi/blob/main/111.PNG "go-Tubi")

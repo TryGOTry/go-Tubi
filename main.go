@@ -7,6 +7,7 @@ import (
 	"github.com/tidwall/gjson"
 	"io/ioutil"
 	"net/http"
+	"net/http/cookiejar"
 	"net/url"
 	"os"
 	"time"
@@ -25,6 +26,10 @@ type Userinfo struct {
 }
 
 func T00ls_Go(u *Userinfo) *Userinfo {
+	jar, err := cookiejar.New(nil)
+	client := &http.Client{
+		Jar: jar,
+	}
 	skey := u.Serverkey
 	md5passwd := md5.Sum([]byte(u.Password)) //将密码进行md5加密
 	u.Password = fmt.Sprintf("%x", md5passwd)
@@ -36,8 +41,8 @@ func T00ls_Go(u *Userinfo) *Userinfo {
 	}
 	//fmt.Println(want)
 	want.Add("questionid", fmt.Sprintf("%v", u.Questionid))
-	request, err := http.PostForm("https://www.t00ls.net/login.json",
-		"", want)
+	request, err := client.PostForm("https://www.t00ls.net/login.json",
+		want)
 	if err != nil || request.Status != "200 OK" {
 		fmt.Println("[info] 土司好像挂了")
 		Sendmsg(u.Serverkey, "土司好像挂了,一小时后会尝试重新打卡."+fmt.Sprintf("%d", time.Now().Unix()))
@@ -64,16 +69,15 @@ func T00ls_Go(u *Userinfo) *Userinfo {
 	h.Signsubmit = "true"
 	h.Cookie = fmt.Sprintf("%s", ck) + fmt.Sprintf("%s", sid)
 	h.Serverkey = skey
-	Sign(h)  //签到
-	return h //登录成功返回hash
+	Sign(h, client) //签到
+	return h        //登录成功返回hash
 }
-func Sign(h *Userinfo) { //签到函数
-	client := &http.Client{}
+func Sign(h *Userinfo, client *http.Client) { //签到函数
 	want := url.Values{
 		"signsubmit": {h.Signsubmit},
 		"formhash":   {h.Formhash},
 	}
-	request, err := client.PostForm("https://www.t00ls.net/ajax-sign.json", h.Cookie, want)
+	request, err := client.PostForm("https://www.t00ls.net/ajax-sign.json", want)
 	if err != nil || request.Status != "200 OK" {
 		fmt.Println("[info] 土司好像挂了")
 	}
@@ -123,7 +127,7 @@ func main() {
 	if len(os.Args) < 2 {
 		fmt.Println("[info] 请输入配置文件地址，运行案例:Tubi.exe config.json (不行的话，请加绝对路径)")
 	} else {
-		filename :=os.Args[1]
+		filename := os.Args[1]
 		file, _ := os.Open(filename)
 		defer file.Close()
 		decoder := json.NewDecoder(file)

@@ -1,6 +1,6 @@
 {
   "action":"login",
-  "Username": "",
+  "username": "",
   "password": "",
   "questionid": 0,
   "answer": "",
